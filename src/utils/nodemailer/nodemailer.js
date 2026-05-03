@@ -18,7 +18,7 @@ const transporter = nodemailer.createTransport({
 });
 
 export const sendEmail = async (email) => {
-  const emailToken = jwt.sign({ email }, ajdnftdgfhjd);
+  const emailToken = jwt.sign({ email }, "ajdnftdgfhjd");
   await transporter.sendMail({
     from: "alimumd177437432@gmail.com",
     to: email,
