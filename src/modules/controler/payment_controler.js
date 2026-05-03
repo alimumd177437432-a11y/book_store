@@ -13,9 +13,14 @@ export const createCheckoutSession = ErrorHandler(async (req, res) => {
     .populate("orderItems.bookId");
 
   if (!order) throw new SendError(404, "Order not found");
-  if (order.userId.toString() !== req.user.id)throw new SendError(403,"You are not authorized to pay for this order! This is not your order.",);
+  if (order.userId.toString() !== req.user.id)
+    throw new SendError(
+      403,
+      "You are not authorized to pay for this order! This is not your order.",
+    );
 
-  if (order.paymentStatus === "paid") throw new SendError(400, "Order already paid");
+  if (order.paymentStatus === "paid")
+    throw new SendError(400, "Order already paid");
 
   const line_items = order.orderItems.map((item) => ({
     price_data: {
@@ -23,7 +28,7 @@ export const createCheckoutSession = ErrorHandler(async (req, res) => {
       product_data: {
         name: item.bookId.title,
       },
-      unit_amount: item.bookId.price * 100, 
+      unit_amount: item.bookId.price * 100,
     },
     quantity: item.count,
   }));
@@ -34,10 +39,10 @@ export const createCheckoutSession = ErrorHandler(async (req, res) => {
     mode: "payment",
     line_items,
     metadata: {
-        orderId: order._id.toString()
+      orderId: order._id.toString(),
     },
-    success_url: `http://localhost:4000/api/v1/payment/success?orderId=${order._id}&session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `http://localhost:4000/cancel`,
+    success_url: `https://book-store-dx00.onrender.com/api/v1/payment/success?orderId=${order._id}&session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `https://book-store-dx00.onrender.com/cancel`,
   });
 
   await payModel.create({
@@ -54,35 +59,33 @@ export const createCheckoutSession = ErrorHandler(async (req, res) => {
   });
 });
 
-
 export const stripeWebhook = ErrorHandler(async (req, res) => {
-  const sig = req.headers['stripe-signature'];
+  const sig = req.headers["stripe-signature"];
   let event;
 
-   event = stripe.webhooks.constructEvent(
+  event = stripe.webhooks.constructEvent(
     req.body,
     sig,
-    process.env.STRIPE_WEBHOOK_SECRET
+    process.env.STRIPE_WEBHOOK_SECRET,
   );
 
-  if (event.type === 'checkout.session.completed') {
+  if (event.type === "checkout.session.completed") {
     const session = event.data.object;
 
     const orderId = session.metadata.orderId;
 
     await payModel.findOneAndUpdate(
       { stripeSessionId: session.id },
-      { status: "succeeded" }
+      { status: "succeeded" },
     );
 
     await orderModel.findOneAndUpdate(
-      { _id: orderId }, 
-      { 
+      { _id: orderId },
+      {
         paymentStatus: "paid",
-        status: "confirmed"
-      }
+        status: "confirmed",
+      },
     );
-
   }
 
   res.status(200).json({ received: true });
