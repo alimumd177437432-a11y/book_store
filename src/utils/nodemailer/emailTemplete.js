@@ -39,7 +39,7 @@ export const verificationTemplate = (token) => {
 
               <!-- Button -->
               <div style="text-align:center; margin:30px 0;">
-                        <a href="http://localhost:4000/api/v1/user/verify/${token}"
+                        <a href="https://book-store-dx00.onrender.com/api/v1/user/verify/${token}"
                    style="background:#4CAF50; color:white; padding:12px 25px; text-decoration:none; border-radius:5px; display:inline-block; font-weight:bold;">
                    Verify Email
                 </a>

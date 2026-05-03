@@ -33,7 +33,7 @@ export const resetPasswprdTemplete = (code , otpToken) => {
                   ${code}
                 </p>
                 <p>
-                  http://localhost:4000/api/v1/user/reset-password/${otpToken}
+                  https://book-store-dx00.onrender.com/api/v1/user/reset-password/${otpToken}
                 </p>
               </div>
 
