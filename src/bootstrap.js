@@ -16,7 +16,7 @@ export const bootstrap = async (app) => {
   });
   await DBconection();
 
-  app.listen(port, () => {
+  app.listen(port, "0.0.0.0", () => {
     console.log("server listening on port" + port);
   });
 };

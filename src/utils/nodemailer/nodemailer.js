@@ -8,18 +8,19 @@ dotenv.config();
 
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
+  port: 587,
+  secure: false,
+  family: 4,
   auth: {
-    user: process.env.NODEMAILER_USER,
-    pass: process.env.NODEMAILER_PASS,
+    user: "alimumd177437432@gmail.com",
+    pass: "lwpsvnpqjriczabf"
   },
 });
 
 export const sendEmail = async (email) => {
-  const emailToken = jwt.sign({ email }, process.env.SECRET_KEY);
+  const emailToken = jwt.sign({ email }, ajdnftdgfhjd);
   await transporter.sendMail({
-    from: process.env.NODEMAILER_USER,
+    from: "alimumd177437432@gmail.com",
     to: email,
     subject: "book_store",
     text: "hi wellcome you in our book store",
