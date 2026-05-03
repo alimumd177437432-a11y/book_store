@@ -12,15 +12,15 @@ const transporter = nodemailer.createTransport({
   secure: false,
   family: 4,
   auth: {
-    user: "alimumd177437432@gmail.com",
-    pass: "lwpsvnpqjriczabf"
+    user: process.env.NODEMAILER_USER,
+    pass: process.env.NODEMAILER_PASS,
   },
 });
 
 export const sendEmail = async (email) => {
-  const emailToken = jwt.sign({ email }, "ajdnftdgfhjd");
+  const emailToken = jwt.sign({ email }, process.env.SECRET_KEY);
   await transporter.sendMail({
-    from: "alimumd177437432@gmail.com",
+    from: process.env.NODEMAILER_USER,
     to: email,
     subject: "book_store",
     text: "hi wellcome you in our book store",
