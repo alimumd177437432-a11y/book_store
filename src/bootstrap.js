@@ -4,7 +4,7 @@ import { DBconection } from "./DBconection.js";
 import { v1Router } from "./v1_routes.js";
 dotenv.config();
 
-const port = process.env.PORT;
+const port = process.env.PORT || 4000;
 export const bootstrap = async (app) => {
   app.use(cors());
   app.use("/api/v1" , v1Router)

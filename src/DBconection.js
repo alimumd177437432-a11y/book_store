@@ -4,6 +4,6 @@ dotenv.config()
 
 
 export const DBconection = async()=> {
-    const conection = await mongoose.connect(`${process.env.MONGO_URL}/${process.env.DB_NAME}`)
+    const conection = await mongoose.connect(`${process.env.MONGO_URL}`)
     return conection
 }
