@@ -7,15 +7,14 @@ import { resetPasswprdTemplete } from "./resetpasswordTemplete.js";
 dotenv.config();
 
 const transporter = nodemailer.createTransport({
-service: "gmail",
+  service: "gmail",
+  host: process.env.SMTP_HOST,
+ port: process.env.SMTP_PORT,
+  secure: true, 
   auth: {
     user: process.env.NODEMAILER_USER,
-    pass: process.env.NODEMAILER_PASS,
+    pass: process.env.NODEMAILER_PASS, // اتأكد إنه الكود الـ 16 حرف الجديد
   },
-  connectionTimeout: 5000, // استنى 5 ثواني بس لو ما شبك يعطي خطأ
-  greetingTimeout: 5000,
-  socketTimeout: 5000,
-});
 });
 
 export const sendEmail = async (email) => {
