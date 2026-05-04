@@ -7,9 +7,9 @@ import { resetPasswprdTemplete } from "./resetpasswordTemplete.js";
 dotenv.config();
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
-  host: process.env.SMTP_HOST,
- port: process.env.SMTP_PORT,
+
+host: "aa21db001@smtp-brevo.com",
+ port: 587,
   secure: false, 
   auth: {
     user: process.env.NODEMAILER_USER,
