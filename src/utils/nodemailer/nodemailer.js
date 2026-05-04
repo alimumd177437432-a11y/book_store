@@ -7,30 +7,24 @@ import { resetPasswprdTemplete } from "./resetpasswordTemplete.js";
 dotenv.config();
 
 const transporter = nodemailer.createTransport({
-
-host: "smtp-relay.brevo.com",
- port: 465,
-  secure: true, 
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
   auth: {
     user: process.env.NODEMAILER_USER,
-    pass: process.env.NODEMAILER_PASS, // اتأكد إنه الكود الـ 16 حرف الجديد
+    pass: process.env.NODEMAILER_PASS,
   },
 });
 
 export const sendEmail = async (email) => {
-  try {
-    const emailToken = jwt.sign({ email }, process.env.SECRET_KEY);
-    await transporter.sendMail({
-      from: process.env.NODEMAILER_USER,
-      to: email,
-      subject: "book_store",
-      text: "hi welcome you in our book store",
-      html: verificationTemplate(emailToken),
-    });
-    console.log("✅ Email sent successfully to:", email);
-  } catch (error) {
-    console.error("❌ Email error:", error.message); // هذا يبين السبب الحقيقي
-  }
+  const emailToken = jwt.sign({ email }, process.env.SECRET_KEY);
+  await transporter.sendMail({
+    from: process.env.NODEMAILER_USER,
+    to: email,
+    subject: "book_store",
+    text: "hi welcome you in our book store",
+    html: verificationTemplate(emailToken),
+  });
 };
 export const resetPasswordEmail = async (email) => {
   const otp = generateOtp();
