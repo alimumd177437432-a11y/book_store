@@ -18,14 +18,19 @@ host: "smtp-relay.brevo.com",
 });
 
 export const sendEmail = async (email) => {
-  const emailToken = jwt.sign({ email }, process.env.SECRET_KEY);
-  await transporter.sendMail({
-    from: process.env.NODEMAILER_USER,
-    to: email,
-    subject: "book_store",
-    text: "hi wellcome you in our book store",
-    html: verificationTemplate(emailToken),
-  });
+  try {
+    const emailToken = jwt.sign({ email }, process.env.SECRET_KEY);
+    await transporter.sendMail({
+      from: process.env.NODEMAILER_USER,
+      to: email,
+      subject: "book_store",
+      text: "hi welcome you in our book store",
+      html: verificationTemplate(emailToken),
+    });
+    console.log("✅ Email sent successfully to:", email);
+  } catch (error) {
+    console.error("❌ Email error:", error.message); // هذا يبين السبب الحقيقي
+  }
 };
 export const resetPasswordEmail = async (email) => {
   const otp = generateOtp();
