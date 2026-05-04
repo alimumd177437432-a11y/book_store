@@ -8,11 +8,11 @@ dotenv.config();
 
 const transporter = nodemailer.createTransport({
 
-host: "aa21db001@smtp-brevo.com",
+host: "smtp-relay.brevo.com",
  port: 587,
   secure: false, 
   auth: {
-    user: process.env.NODEMAILER_USER,
+    user: "aa21db001@smtp-brevo.com",
     pass: process.env.NODEMAILER_PASS, // اتأكد إنه الكود الـ 16 حرف الجديد
   },
 });
