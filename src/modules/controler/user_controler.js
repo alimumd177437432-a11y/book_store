@@ -25,7 +25,7 @@ export const signup = ErrorHandler(async (req, res) => {
 
   res.status(201).json({
     status: "success",
-    message: "Created successfully , verify your email",
+    message: "Created successfully , verify your email now",
     data: create,
   });
 });
