@@ -7,17 +7,15 @@ import { resetPasswprdTemplete } from "./resetpasswordTemplete.js";
 dotenv.config();
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
-  host: "smtp.gmail.com",
-  port: 465, // هذا هو الحل! المنفذ 465 بدلاً من 587
-  secure: true, // لازم تكون true مع المنفذ 465
+service: "gmail",
   auth: {
     user: process.env.NODEMAILER_USER,
-    pass: process.env.NODEMAILER_PASS, // اتأكد إنه الكود الـ 16 حرف الجديد
+    pass: process.env.NODEMAILER_PASS,
   },
-  tls: {
-    rejectUnauthorized: false, // عشان نتخطى أي مشاكل في شهادات الأمان على السيرفر
-  },
+  connectionTimeout: 5000, // استنى 5 ثواني بس لو ما شبك يعطي خطأ
+  greetingTimeout: 5000,
+  socketTimeout: 5000,
+});
 });
 
 export const sendEmail = async (email) => {
