@@ -10,7 +10,7 @@ const transporter = nodemailer.createTransport({
   service: "gmail",
   host: process.env.SMTP_HOST,
  port: process.env.SMTP_PORT,
-  secure: true, 
+  secure: false, 
   auth: {
     user: process.env.NODEMAILER_USER,
     pass: process.env.NODEMAILER_PASS, // اتأكد إنه الكود الـ 16 حرف الجديد
