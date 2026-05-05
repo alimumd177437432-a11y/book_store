@@ -10,6 +10,15 @@ import { bookAddingExexution, updateBookModel } from "../controler/book_controle
 const bookRouter = Router()
 
 bookRouter.post("/",upload.array("Image"),catchPrevImage,convertTitleToSlug,addMiddelware(BookModel) ,bookAddingExexution)
+/**
+ * @swagger
+ * /book:
+ *   get:
+ *     summary: جلب كل الكتب
+ *     responses:
+ *       200:
+ *         description: تم جلب البيانات بنجاح
+ */
 bookRouter.get("/",getMiddelware(BookModel) ,selectMiddelware("title description minPrivImage price"), paginationMiddelware(),execute)
 bookRouter.put("/", putMiddelware(BookModel) , execute)
 bookRouter.delete("/", deleteMiddelware(BookModel) , execute)
