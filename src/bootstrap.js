@@ -1,6 +1,6 @@
 import cors from "cors";
 import swaggerUi from 'swagger-ui-express';
-import { swaggerSpec, swaggerUiServe, swaggerUiSetup } from "./swagger.js";
+import { swaggerSpec, swaggerUiServe, swaggerUiSetup } from "../src/utils/swagger.js";
 import dotenv from "dotenv";
 import { DBconection } from "./DBconection.js";
 import { v1Router } from "./v1_routes.js";
