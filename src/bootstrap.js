@@ -1,4 +1,6 @@
 import cors from "cors";
+import swaggerUi from 'swagger-ui-express';
+import { specs } from './utils/swagger.js';
 import dotenv from "dotenv";
 import { DBconection } from "./DBconection.js";
 import { v1Router } from "./v1_routes.js";
@@ -7,6 +9,7 @@ dotenv.config();
 const port = process.env.PORT || 4000;
 export const bootstrap = async (app) => {
   app.use(cors());
+  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
   app.use("/api/v1" , v1Router)
 
   app.use((error, req, res, next) => {
