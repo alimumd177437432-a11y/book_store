@@ -8,20 +8,80 @@ import { upload } from "../../utils/multer/multer.js";
 import { bookAddingExexution, updateBookModel } from "../controler/book_controler.js";
 
 const bookRouter = Router()
-
-bookRouter.post("/",upload.array("Image"),catchPrevImage,convertTitleToSlug,addMiddelware(BookModel) ,bookAddingExexution)
 /**
  * @swagger
  * /book:
- *   get:
- *     summary: جلب كل الكتب
+ *   post:
+ *     summary: إضافة كتاب جديد (مع رفع صور)
+ *     tags: [Books]
  *     responses:
  *       200:
- *         description: تم جلب البيانات بنجاح
+ *         description: تم إضافة الكتاب بنجاح
+ *   get:
+ *     summary: جلب كل الكتب (Pagination)
+ *     tags: [Books]
+ *     responses:
+ *       200:
+ *         description: تم جلب القائمة بنجاح
+ *   put:
+ *     summary: تعديل جماعي للكتب
+ *     tags: [Books]
+ *     responses:
+ *       200:
+ *         description: تم التعديل بنجاح
+ *   delete:
+ *     summary: حذف كل الكتب
+ *     tags: [Books]
+ *     responses:
+ *       200:
+ *         description: تم الحذف بنجاح
  */
+
+bookRouter.post("/",upload.array("Image"),catchPrevImage,convertTitleToSlug,addMiddelware(BookModel) ,bookAddingExexution)
 bookRouter.get("/",getMiddelware(BookModel) ,selectMiddelware("title description minPrivImage price"), paginationMiddelware(),execute)
 bookRouter.put("/", putMiddelware(BookModel) , execute)
 bookRouter.delete("/", deleteMiddelware(BookModel) , execute)
+/**
+ * @swagger
+ * /book/{id}:
+ *   get:
+ *     summary: جلب كتاب واحد بواسطة الـ ID
+ *     tags: [Books]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: معرف الكتاب (Object ID)
+ *     responses:
+ *       200:
+ *         description: تم العثور على الكتاب
+ *   put:
+ *     summary: تحديث بيانات كتاب محدد وصوره
+ *     tags: [Books]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: تم التحديث بنجاح
+ *   delete:
+ *     summary: حذف كتاب محدد
+ *     tags: [Books]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: تم الحذف بنجاح
+ */
 // get one ,and put one , delete one
 bookRouter.get("/:id", getMiddelware(BookModel),filterMiddleware ("_id" , "id"), execute)
 bookRouter.put("/:id",upload.fields([
