@@ -3,9 +3,11 @@ import { bootstrap } from "./src/bootstrap.js";
 import { stripeWebhook } from "./src/modules/controler/payment_controler.js";
 import dotenv from "dotenv";
 import morgan from "morgan";
+import helmet from "helmet";
 dotenv.config(); 
 
 const app = express()
+app.use(helmet())
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev')); 
 }
