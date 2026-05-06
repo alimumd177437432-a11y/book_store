@@ -148,13 +148,19 @@ orderRouter.post("/", authentication, passUserId, makeOrder, addMiddelware(order
 
 /**
  * @swagger
- * /order:
+ * /user/{id}/orders:
  *   get:
  *     summary: جلب طلباتي
  *     tags: [Orders]
  *     security:
  *       - tokenAuth: []
- *     description: الـ userId بييجي تلقائياً من التوكن
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: الـ ID الخاص باليوزر
  *     responses:
  *       200:
  *         description: قائمة الطلبات
@@ -181,12 +187,18 @@ orderRouter.get("/", authentication, getMyOrders, execute);
 
 /**
  * @swagger
- * /order/all:
+ * /user/{id}/orders/all:
  *   get:
  *     summary: جلب كل الطلبات — للأدمن فقط
  *     tags: [Orders]
  *     security:
  *       - tokenAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: كل الطلبات
@@ -213,7 +225,7 @@ orderRouter.get("/all", authentication, authoriziation("admin"), getMiddelware(o
 
 /**
  * @swagger
- * /order/status/{id}:
+ * /user/{id}/orders/status/{orderId}:
  *   put:
  *     summary: تغيير حالة الطلب — للأدمن فقط
  *     tags: [Orders]
@@ -222,6 +234,11 @@ orderRouter.get("/all", authentication, authoriziation("admin"), getMiddelware(o
  *     parameters:
  *       - in: path
  *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: orderId
  *         required: true
  *         schema:
  *           type: string
@@ -261,7 +278,7 @@ orderRouter.put("/status/:id", authentication, authoriziation("admin"), putMidde
 
 /**
  * @swagger
- * /order/cancel/{id}:
+ * /user/{id}/orders/cancel/{orderId}:
  *   put:
  *     summary: إلغاء طلب
  *     tags: [Orders]
@@ -271,6 +288,11 @@ orderRouter.put("/status/:id", authentication, authoriziation("admin"), putMidde
  *     parameters:
  *       - in: path
  *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: orderId
  *         required: true
  *         schema:
  *           type: string
