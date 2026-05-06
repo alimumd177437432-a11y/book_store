@@ -41,19 +41,13 @@ const cartRouter = Router({ mergeParams: true });
 
 /**
  * @swagger
- * /user/{id}/cartItems:
+ * /cart:
  *   post:
  *     summary: إضافة كتاب للسلة
  *     tags: [Cart]
  *     security:
  *       - tokenAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: الـ ID الخاص باليوزر
+ *     description: الـ userId بييجي تلقائياً من التوكن
  *     requestBody:
  *       required: true
  *       content:
@@ -94,7 +88,7 @@ cartRouter.post("/", authentication, passUserIdMiddelware, addMiddelware(cartMod
 
 /**
  * @swagger
- * /user/{id}/cartItems/{cartId}:
+ * /cart/{id}:
  *   put:
  *     summary: تعديل كمية عنصر في السلة
  *     tags: [Cart]
@@ -103,12 +97,6 @@ cartRouter.post("/", authentication, passUserIdMiddelware, addMiddelware(cartMod
  *     parameters:
  *       - in: path
  *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: الـ ID الخاص باليوزر
- *       - in: path
- *         name: cartId
  *         required: true
  *         schema:
  *           type: string
@@ -147,7 +135,7 @@ cartRouter.put("/:id", authentication, putMiddelware(cartModel), filterMiddlewar
 
 /**
  * @swagger
- * /user/{id}/cartItems/{cartId}:
+ * /cart/{id}:
  *   delete:
  *     summary: حذف عنصر واحد من السلة
  *     tags: [Cart]
@@ -156,12 +144,6 @@ cartRouter.put("/:id", authentication, putMiddelware(cartModel), filterMiddlewar
  *     parameters:
  *       - in: path
  *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: الـ ID الخاص باليوزر
- *       - in: path
- *         name: cartId
  *         required: true
  *         schema:
  *           type: string
@@ -190,19 +172,12 @@ cartRouter.delete("/:id", authentication, deleteMiddelware(cartModel), filterMid
 
 /**
  * @swagger
- * /user/{id}/cartItems:
+ * /cart:
  *   delete:
  *     summary: حذف كل عناصر السلة
  *     tags: [Cart]
  *     security:
  *       - tokenAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: الـ ID الخاص باليوزر
  *     responses:
  *       200:
  *         description: تم حذف السلة بالكامل
@@ -227,17 +202,14 @@ cartRouter.delete("/", authentication, deleteMiddelware(cartModel), execute);
 
 /**
  * @swagger
- * /user/{id}/cartItems:
+ * /cart:
  *   get:
- *     summary: جلب كل عناصر سلة يوزر معين
+ *     summary: جلب سلة المستخدم الحالي
  *     tags: [Cart]
+ *     security:
+ *       - tokenAuth: []
+ *     description: الـ userId بييجي تلقائياً من التوكن — ما في داعي ترسل شي
  *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: الـ ID الخاص باليوزر
  *       - in: query
  *         name: page
  *         schema:
@@ -265,7 +237,11 @@ cartRouter.delete("/", authentication, deleteMiddelware(cartModel), execute);
  *                   type: array
  *                   items:
  *                     $ref: '#/components/schemas/CartItem'
+ *       401:
+ *         description: غير مصرح
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  */
-cartRouter.get("/", getMiddelware(cartModel), filterMiddleware("userId", "id"), paginationMiddelware(), execute);
-
-export { cartRouter };
+cartRouter.get("/", authentication, passUserIdMiddelware, getMiddelware(cartModel), filterMiddleware("userId", "id"), paginationMiddelware(), execute);export { cartRouter };

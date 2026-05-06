@@ -83,20 +83,16 @@ const orderRouter = Router({ mergeParams: true });
 
 /**
  * @swagger
- * /user/{id}/orders:
+ * /order:
  *   post:
  *     summary: إنشاء طلب جديد من السلة
  *     tags: [Orders]
  *     security:
  *       - tokenAuth: []
- *     description: بيجمع كل عناصر السلة ويعمل منها طلب، وبعدين يمسح السلة تلقائياً
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: الـ ID الخاص باليوزر
+ *     description: |
+ *       بيجمع كل عناصر السلة ويعمل منها طلب، وبعدين يمسح السلة تلقائياً
+ *
+ *       الـ userId بييجي تلقائياً من التوكن
  *     requestBody:
  *       content:
  *         application/json:
@@ -152,19 +148,13 @@ orderRouter.post("/", authentication, passUserId, makeOrder, addMiddelware(order
 
 /**
  * @swagger
- * /user/{id}/orders:
+ * /order:
  *   get:
  *     summary: جلب طلباتي
  *     tags: [Orders]
  *     security:
  *       - tokenAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: الـ ID الخاص باليوزر
+ *     description: الـ userId بييجي تلقائياً من التوكن
  *     responses:
  *       200:
  *         description: قائمة الطلبات
@@ -191,18 +181,12 @@ orderRouter.get("/", authentication, getMyOrders, execute);
 
 /**
  * @swagger
- * /user/{id}/orders/all:
+ * /order/all:
  *   get:
  *     summary: جلب كل الطلبات — للأدمن فقط
  *     tags: [Orders]
  *     security:
  *       - tokenAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
  *     responses:
  *       200:
  *         description: كل الطلبات
@@ -229,7 +213,7 @@ orderRouter.get("/all", authentication, authoriziation("admin"), getMiddelware(o
 
 /**
  * @swagger
- * /user/{id}/orders/status/{orderId}:
+ * /order/status/{id}:
  *   put:
  *     summary: تغيير حالة الطلب — للأدمن فقط
  *     tags: [Orders]
@@ -238,11 +222,6 @@ orderRouter.get("/all", authentication, authoriziation("admin"), getMiddelware(o
  *     parameters:
  *       - in: path
  *         name: id
- *         required: true
- *         schema:
- *           type: string
- *       - in: path
- *         name: orderId
  *         required: true
  *         schema:
  *           type: string
@@ -282,7 +261,7 @@ orderRouter.put("/status/:id", authentication, authoriziation("admin"), putMidde
 
 /**
  * @swagger
- * /user/{id}/orders/cancel/{orderId}:
+ * /order/cancel/{id}:
  *   put:
  *     summary: إلغاء طلب
  *     tags: [Orders]
@@ -292,11 +271,6 @@ orderRouter.put("/status/:id", authentication, authoriziation("admin"), putMidde
  *     parameters:
  *       - in: path
  *         name: id
- *         required: true
- *         schema:
- *           type: string
- *       - in: path
- *         name: orderId
  *         required: true
  *         schema:
  *           type: string
