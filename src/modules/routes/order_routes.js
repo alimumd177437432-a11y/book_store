@@ -278,7 +278,7 @@ orderRouter.put("/status/:id", authentication, authoriziation("admin"), putMidde
 
 /**
  * @swagger
- * /user/{id}/orders/cancel/{orderId}:
+ * /order/cancel/{id}:
  *   put:
  *     summary: إلغاء طلب
  *     tags: [Orders]
@@ -288,11 +288,6 @@ orderRouter.put("/status/:id", authentication, authoriziation("admin"), putMidde
  *     parameters:
  *       - in: path
  *         name: id
- *         required: true
- *         schema:
- *           type: string
- *       - in: path
- *         name: orderId
  *         required: true
  *         schema:
  *           type: string

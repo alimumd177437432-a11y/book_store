@@ -40,20 +40,15 @@ const cartRouter = Router({ mergeParams: true });
  */
 
 /**
+/**
  * @swagger
- * /user/{id}/cartItems:
+ * /cart:
  *   post:
  *     summary: إضافة كتاب للسلة
  *     tags: [Cart]
  *     security:
  *       - tokenAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: الـ ID الخاص باليوزر
+ *     description: الـ userId بييجي تلقائياً من التوكن
  *     requestBody:
  *       required: true
  *       content:
@@ -94,7 +89,7 @@ cartRouter.post("/", authentication, passUserIdMiddelware, addMiddelware(cartMod
 
 /**
  * @swagger
- * /user/{id}/cartItems/{cartId}:
+ * /cart/{id}:
  *   put:
  *     summary: تعديل كمية عنصر في السلة
  *     tags: [Cart]
@@ -103,12 +98,6 @@ cartRouter.post("/", authentication, passUserIdMiddelware, addMiddelware(cartMod
  *     parameters:
  *       - in: path
  *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: الـ ID الخاص باليوزر
- *       - in: path
- *         name: cartId
  *         required: true
  *         schema:
  *           type: string
@@ -147,7 +136,7 @@ cartRouter.put("/:id", authentication, putMiddelware(cartModel), filterMiddlewar
 
 /**
  * @swagger
- * /user/{id}/cartItems/{cartId}:
+ * /cart/{id}:
  *   delete:
  *     summary: حذف عنصر واحد من السلة
  *     tags: [Cart]
@@ -156,12 +145,6 @@ cartRouter.put("/:id", authentication, putMiddelware(cartModel), filterMiddlewar
  *     parameters:
  *       - in: path
  *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: الـ ID الخاص باليوزر
- *       - in: path
- *         name: cartId
  *         required: true
  *         schema:
  *           type: string
@@ -190,19 +173,12 @@ cartRouter.delete("/:id", authentication, deleteMiddelware(cartModel), filterMid
 
 /**
  * @swagger
- * /user/{id}/cartItems:
+ * /cart:
  *   delete:
  *     summary: حذف كل عناصر السلة
  *     tags: [Cart]
  *     security:
  *       - tokenAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: الـ ID الخاص باليوزر
  *     responses:
  *       200:
  *         description: تم حذف السلة بالكامل
