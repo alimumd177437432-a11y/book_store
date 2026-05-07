@@ -1,4 +1,5 @@
-import logger from './utils/logger.js';
+import logger from "../utils/logger";
+
 
 export const ErrorHandler = (fun)=> {
     return (req , res, next)=> {
