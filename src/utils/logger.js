@@ -27,11 +27,11 @@ const logger = winston.createLogger({
   format: logFormat,
   transports: [errorRotateTransport, combinedRotateTransport],
 });
-
-logger.add(
-  new winston.transports.Console({
-    format: winston.format.combine(winston.format.colorize(), logFormat),
-  }),
-);
-
+if (process.env.NODE_ENV !== "production") {
+  logger.add(
+    new winston.transports.Console({
+      format: winston.format.combine(winston.format.colorize(), logFormat),
+    }),
+  );
+}
 export default logger;
