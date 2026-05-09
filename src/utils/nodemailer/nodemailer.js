@@ -1,42 +1,36 @@
 import nodemailer from "nodemailer";
+import { Resend } from "resend";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 import { verificationTemplate } from "./emailTemplete.js";
 import { generateOtp } from "../otp/otp.js";
 import { resetPasswprdTemplete } from "./resetpasswordTemplete.js";
 dotenv.config();
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false, // لازم false للمنفذ 587
-  auth: {
-    user: process.env.NODEMAILER_USER,
-    pass: process.env.NODEMAILER_PASS,
-  },
-  // --- أضف هذا الجزء ضروري جداً للسيرفرات ---
-  tls: {
-    rejectUnauthorized: false 
-  }
-});
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const sendEmail = async (email) => {
-  try {
-    const emailToken = jwt.sign({ email }, process.env.SECRET_KEY);
-    const info = await transporter.sendMail({
-      from: `"Book Store" <${process.env.NODEMAILER_USER}>`, // كتابة الاسم بشكل أوضح
-      to: email,
-      subject: "Verify your email - Book Store",
-      text: "Welcome to our store, please verify your email.",
-      html: verificationTemplate(emailToken),
-    });
+    try {
+        const emailToken = jwt.sign({ email }, process.env.SECRET_KEY);
+        
+        const { data, error } = await resend.emails.send({
+            from: 'BookStore <onboarding@resend.dev>', // في البداية استخدم هاد الإيميل للتجربة
+            to: email,
+            subject: 'Verify your email - Book Store',
+            html: verificationTemplate(emailToken),
+        });
 
-    console.log("✅ Email sent successfully to:", email);
-    return info;
-  } catch (error) {
-    // هذا السطر هو اللي هيظهر لك في شاشة Logs الـ Render
-    console.error("❌ NODE_MAILER_ERROR:", error); 
-    throw error; 
-  }
+        if (error) {
+            console.error("❌ Resend Error:", error);
+            throw error;
+        }
+
+        console.log("✅ Email sent via Resend API:", data.id);
+        return data;
+    } catch (err) {
+        console.error("❌ الخلل من السيرفر في إرسال الـ API:", err.message);
+        throw err;
+    }
 };
 export const resetPasswordEmail = async (email) => {
   const otp = generateOtp();
