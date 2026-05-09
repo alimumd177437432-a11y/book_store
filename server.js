@@ -7,6 +7,7 @@ import helmet from "helmet";
 dotenv.config(); 
 
 const app = express()
+app.use('/public', express.static('public'));
 app.use(helmet())
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev')); 
