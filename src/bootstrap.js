@@ -20,7 +20,7 @@ export const bootstrap = async (app) => {
     logger.info(`طلب جديد: ${req.method} على المسار ${req.url}`);
     next();
   });
-  app.use("/uploads", express.static("public/books"));
+  app.use("/public/books", express.static("public/books"));
   app.use("/api-docs", swaggerUiServe, swaggerUiSetup);
   app.use("/api/v1", v1Router);
   
