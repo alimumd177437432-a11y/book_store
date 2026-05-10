@@ -1,4 +1,5 @@
 import { ErrorHandler, SendError } from "../../services/errorhandeler.js";
+import { uploadToCloudinary } from "../../utils/cloudinary.js";
 import { BookModel } from "../models/book_model.js";
 import { ImageModel } from "../models/book_model_Images.js";
 export const bookAddingExexution = ErrorHandler(async (req, res) => {
@@ -6,7 +7,8 @@ export const bookAddingExexution = ErrorHandler(async (req, res) => {
   if (req.files) {
     for (let i = 0; i < req.files.length; i++) {
       if (i !== 0) {
-        bookImagePaths.push(req.files[i].path);
+        const uploadResult = await uploadToCloudinary(req.files[i].buffer, "books-gallery");
+        bookImagePaths.push(uploadResult.secure_url);
       }
     }
   }
@@ -26,12 +28,14 @@ export const bookAddingExexution = ErrorHandler(async (req, res) => {
 
 export const updateBookModel = ErrorHandler(async (req, res) => {
   if (req.files.prevImage) {
-    req.body.minPrivImage = req.files.prevImage[0].path;
+    const uploadResult = await uploadToCloudinary(req.files.prevImage[0].buffer, "books-covers");
+    req.body.minPrivImage = uploadResult.secure_url;
   }
   let bookImagePaths = [];
   if (req.files.Image) {
     for (let i = 0; i < req.files.Image.length; i++) {
-      bookImagePaths.push(req.files.Image[i].path);
+      const uploadResult = await uploadToCloudinary(req.files.Image[i].buffer, "books-gallery");
+      bookImagePaths.push(uploadResult.secure_url);
     }
     const addBookImages = await ImageModel.updateOne(
       { bookId: req.params.id },

@@ -1,15 +1,17 @@
 import slugify from "slugify";
 import { ErrorHandler, SendError } from "../../services/errorhandeler.js";
 import { ImageModel } from "../models/book_model_Images.js";
+import { uploadToCloudinary } from "../../utils/cloudinary.js";
 export const convertTitleToSlug = (req, res, next) => {
   const { title } = req.body;
   if (!title) return next();
   req.body.slug = slugify(title);
   next();
 };
-export const catchPrevImage = (req, res, next) => {
+export const catchPrevImage = async(req, res, next) => {
   if (req.files && req.files.length > 0) {
-    req.body.minPrivImage = req.files[0].path;
+    const uploadResult = await uploadToCloudinary(req.files[0].buffer, "books-covers");
+    req.body.minPrivImage = uploadResult.secure_url;
     next();
   } else {
     return next(new SendError(400, "prevImage is required"));
