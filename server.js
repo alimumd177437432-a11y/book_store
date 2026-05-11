@@ -7,8 +7,8 @@ import path from "path";
 import { fileURLToPath } from "url";
 import helmet from "helmet";
 import hpp from "hpp";
-import mongoSanitize from 'express-mongo-sanitize';
-import xss from 'xss-clean';
+// import mongoSanitize from 'express-mongo-sanitize';
+// import xss from 'xss-clean';
 import { globalLimiter } from "./src/middelwares/rateLimiter.js";
 dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
@@ -24,8 +24,8 @@ app.use(express.json({ limit: "20kb" }));
 
 app.use("/api", globalLimiter);
 
-app.use(mongoSanitize());
-app.use(xss());
+// app.use(mongoSanitize());
+// app.use(xss());
 
 app.use(
   hpp({
