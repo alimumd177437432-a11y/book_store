@@ -7,6 +7,7 @@ import { filterMiddleware } from "../../middelwares/featuears_middelware.js";
 import { authentication, authoriziation } from "../../middelwares/auth_middelware.js";
 import { cartRouter } from "./cart_routes.js";
 import { orderRouter } from "./order_routes.js";
+import { loginLimiter } from "../../middelwares/rateLimiter.js";
 
 const userRouter = Router({ mergeParams: true });
 
@@ -105,7 +106,7 @@ const userRouter = Router({ mergeParams: true });
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-userRouter.post("/signup", signup);
+userRouter.post("/signup", loginLimiter, signup);
 
 /**
  * @swagger
@@ -151,7 +152,7 @@ userRouter.post("/signup", signup);
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-userRouter.post("/login", login);
+userRouter.post("/login" , loginLimiter, login);
 
 /**
  * @swagger
@@ -363,7 +364,7 @@ userRouter.get("/", authentication, getMyAcountData);
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-userRouter.post("/ask-reset-password", addForResetPassword);
+userRouter.post("/ask-reset-password", loginLimiter,addForResetPassword);
 
 /**
  * @swagger
@@ -423,7 +424,7 @@ userRouter.post("/ask-reset-password", addForResetPassword);
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-userRouter.post("/reset-password/:otpToken", newpassword);
+userRouter.post("/reset-password/:otpToken", loginLimiter,newpassword);
 /**
  * @swagger
  * /user/{id}/cartItems:
