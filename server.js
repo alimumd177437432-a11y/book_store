@@ -24,8 +24,8 @@ app.use(express.json({ limit: "20kb" }));
 
 app.use("/api", globalLimiter);
 
-// app.use(mongoSanitize());
-// app.use(xss());
+app.use(mongoSanitize());
+app.use(xss());
 
 app.use(
   hpp({
