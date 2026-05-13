@@ -1,7 +1,13 @@
 import Joi from "joi";
 
+// قاعدة الـ ObjectId الموحدة
+const objectIdRule = Joi.string().pattern(/^[a-fA-F0-9]{24}$/);
+
 // ===== Create Order =====
 export const createOrderSchema = Joi.object({
+  // أضف هذا السطر هنا لحل مشكلة الـ 400
+  userId: objectIdRule, 
+
   address: Joi.object({
     governorate: Joi.string().min(2).max(100).messages({
       "string.min": "Governorate must be at least 2 characters",
