@@ -87,7 +87,7 @@ const cartRouter = Router({ mergeParams: true });
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-cartRouter.post("/", authentication, passUserIdMiddelware, addMiddelware(cartModel), execute);
+cartRouter.post("/", authentication, passUserIdMiddelware, validate(addToCartSchema), addMiddelware(cartModel), execute);
 
 /**
  * @swagger
