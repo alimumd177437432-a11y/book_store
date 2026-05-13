@@ -6,6 +6,8 @@ import { filterMiddleware, paginationMiddelware, selectMiddelware } from "../../
 import { catchPrevImage, convertTitleToSlug, deleteImagesBook } from "../middelwares/slug_middelwares.js";
 import { upload } from "../../utils/multer/multer.js";
 import { bookAddingExexution, updateBookModel } from "../controler/book_controler.js";
+import { validate } from "../../validators/validate.js";
+import { addBookSchema, updateBookSchema } from "../../validators/book.validator.js";
 
 const bookRouter = Router();
 
@@ -77,7 +79,7 @@ const bookRouter = Router();
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-bookRouter.post("/", upload.array("Image"), catchPrevImage, convertTitleToSlug, addMiddelware(BookModel), bookAddingExexution);
+bookRouter.post("/", upload.array("Image"), catchPrevImage, convertTitleToSlug, validate(addBookSchema), addMiddelware(BookModel), bookAddingExexution);
 
 /**
  * @swagger
@@ -284,7 +286,7 @@ bookRouter.get("/:id", getMiddelware(BookModel), filterMiddleware("_id", "id"), 
 bookRouter.put("/:id", upload.fields([
   { name: "prevImage", maxCount: 1 },
   { name: "Image", maxCount: 10 },
-]), convertTitleToSlug, updateBookModel);
+]), convertTitleToSlug, validate(updateBookSchema), updateBookModel);
 
 /**
  * @swagger

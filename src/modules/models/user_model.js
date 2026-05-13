@@ -6,7 +6,6 @@ const userSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
-      match: [/^[a-zA-Z\s]*$/, "Name should only contain letters"],
     },
     role: {
     type: String,

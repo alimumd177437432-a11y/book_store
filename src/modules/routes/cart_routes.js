@@ -5,6 +5,8 @@ import { authentication } from "../../middelwares/auth_middelware.js";
 import { addMiddelware, deleteMiddelware, getMiddelware, putMiddelware } from "../../middelwares/query_middelwares.js";
 import { execute } from "../../middelwares/execute_middelware.js";
 import { filterMiddleware, paginationMiddelware } from "../../middelwares/featuears_middelware.js";
+import { validate } from "../../validators/validate.js";
+import { addToCartSchema, updateCartSchema } from "../../validators/cart.validator.js";
 
 const cartRouter = Router({ mergeParams: true });
 
@@ -85,7 +87,7 @@ const cartRouter = Router({ mergeParams: true });
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-cartRouter.post("/", authentication, passUserIdMiddelware, addMiddelware(cartModel), execute);
+cartRouter.post("/", authentication, passUserIdMiddelware, validate(addToCartSchema), addMiddelware(cartModel), execute);
 
 /**
  * @swagger
@@ -132,7 +134,7 @@ cartRouter.post("/", authentication, passUserIdMiddelware, addMiddelware(cartMod
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-cartRouter.put("/:id", authentication, putMiddelware(cartModel), filterMiddleware("_id", "id"), execute);
+cartRouter.put("/:id", authentication, validate(updateCartSchema), putMiddelware(cartModel), filterMiddleware("_id", "id"), execute);
 
 /**
  * @swagger
