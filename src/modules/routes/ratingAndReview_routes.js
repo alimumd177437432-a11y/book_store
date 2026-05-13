@@ -2,8 +2,8 @@ import { Router } from "express";
 import { authentication } from "../../middelwares/auth_middelware.js";
 import { addReview, deleteReview, getAllReviewsForBook, updateReview } from "../controler/ratingAndReview_controler.js";
 import { reviewMiddelware } from "../middelwares/ratingandreview_middelware.js";
-import { validate } from "../../validators/validate.js";
-import { addReviewSchema, updateReviewSchema } from "../../validators/review.validator.js";
+// import { validate } from "../../validators/validate.js";
+// import { addReviewSchema, updateReviewSchema } from "../../validators/review.validator.js";
 
 const ratingRouter = Router();
 
@@ -102,7 +102,7 @@ const ratingRouter = Router();
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-ratingRouter.post("/", authentication, validate(addReviewSchema), addReview);
+ratingRouter.post("/", authentication,  addReview);
 
 /**
  * @swagger
@@ -248,6 +248,6 @@ ratingRouter.delete("/:id", authentication, reviewMiddelware, deleteReview);
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-ratingRouter.put("/:id", authentication, reviewMiddelware, validate(updateReviewSchema), updateReview);
+ratingRouter.put("/:id", authentication, reviewMiddelware,  updateReview);
 
 export { ratingRouter };

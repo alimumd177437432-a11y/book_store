@@ -21,7 +21,7 @@ export const makeOrder = ErrorHandler(async (req, res, next) => {
     orderItems.push({
       bookId: item.bookId._id,
       count: item.count,
-      price: item.bookId.price, // مهم
+      price: item.bookId.price, 
     });
 
     totalPrice += item.bookId.price * item.count;

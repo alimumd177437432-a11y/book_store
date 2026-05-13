@@ -7,8 +7,8 @@ import { execute } from "../../middelwares/execute_middelware.js";
 import { filterMiddleware, paginationMiddelware } from "../../middelwares/featuears_middelware.js";
 import { clearCart, passUserId } from "../middelwares/order_middelware.js";
 import { cancelOrder, getMyOrders, makeOrder } from "../controler/order_controler.js";
-import { validate } from "../../validators/validate.js";
-import { createOrderSchema, updateOrderStatusSchema } from "../../validators/order.validator.js";
+// import { validate } from "../../validators/validate.js";
+// import { createOrderSchema, updateOrderStatusSchema } from "../../validators/order.validator.js";
 
 const orderRouter = Router({ mergeParams: true });
 
@@ -146,7 +146,7 @@ const orderRouter = Router({ mergeParams: true });
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-orderRouter.post("/", authentication, passUserId, validate(createOrderSchema), makeOrder, addMiddelware(orderModel), clearCart, execute);
+orderRouter.post("/", authentication, passUserId, makeOrder, addMiddelware(orderModel), clearCart, execute);
 
 /**
  * @swagger
@@ -276,7 +276,7 @@ orderRouter.get("/all", authentication, authoriziation("admin"), getMiddelware(o
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-orderRouter.put("/status/:id", authentication, authoriziation("admin"), validate(updateOrderStatusSchema), putMiddelware(orderModel), execute);
+orderRouter.put("/status/:id", authentication, authoriziation("admin"),putMiddelware(orderModel), execute);
 
 /**
  * @swagger

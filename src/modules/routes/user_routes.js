@@ -9,15 +9,15 @@ import { cartRouter } from "./cart_routes.js";
 import { orderRouter } from "./order_routes.js";
 import { loginLimiter } from "../../middelwares/rateLimiter.js";
 
-import {
-  signupSchema,
-  loginSchema,
-  updateAccountSchema,
-  updatePasswordSchema,
-  askResetPasswordSchema,
-  newPasswordSchema,
-} from "../../validators/user.validator.js";
-import { validate } from "../../validators/validate.js";
+// import {
+//   signupSchema,
+//   loginSchema,
+//   updateAccountSchema,
+//   updatePasswordSchema,
+//   askResetPasswordSchema,
+//   newPasswordSchema,
+// } from "../../validators/user.validator.js";
+// import { validate } from "../../validators/validate.js";
 
 const userRouter = Router({ mergeParams: true });
 
@@ -116,7 +116,7 @@ const userRouter = Router({ mergeParams: true });
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-userRouter.post("/signup", loginLimiter, validate(signupSchema), signup);
+userRouter.post("/signup", loginLimiter,  signup);
 
 /**
  * @swagger
@@ -162,7 +162,7 @@ userRouter.post("/signup", loginLimiter, validate(signupSchema), signup);
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-userRouter.post("/login" , loginLimiter, validate(loginSchema), login);
+userRouter.post("/login" , loginLimiter, login);
 
 /**
  * @swagger
@@ -251,7 +251,7 @@ userRouter.get("/verify/:token", verifyEmial);
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-userRouter.put("/", authentication, validate(updateAccountSchema), updateAcount);
+userRouter.put("/", authentication, updateAcount);
 
 /**
  * @swagger
@@ -299,7 +299,7 @@ userRouter.put("/", authentication, validate(updateAccountSchema), updateAcount)
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-userRouter.put("/pass", authentication, validate(updatePasswordSchema), updatePassword);
+userRouter.put("/pass", authentication,  updatePassword);
 
 /**
  * @swagger
@@ -374,7 +374,7 @@ userRouter.get("/", authentication, getMyAcountData);
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-userRouter.post("/ask-reset-password", loginLimiter, validate(askResetPasswordSchema), addForResetPassword);
+userRouter.post("/ask-reset-password", loginLimiter, addForResetPassword);
 
 /**
  * @swagger
@@ -434,7 +434,7 @@ userRouter.post("/ask-reset-password", loginLimiter, validate(askResetPasswordSc
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-userRouter.post("/reset-password/:otpToken", loginLimiter, validate(newPasswordSchema), newpassword);
+userRouter.post("/reset-password/:otpToken", loginLimiter,  newpassword);
 /**
  * @swagger
  * /user/{id}/cartItems:
