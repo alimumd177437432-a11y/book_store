@@ -146,7 +146,7 @@ const orderRouter = Router({ mergeParams: true });
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-orderRouter.post("/", authentication, passUserId, validate(createOrderSchema), makeOrder, addMiddelware(orderModel), clearCart, execute);
+orderRouter.post("/", authentication, passUserId, makeOrder, addMiddelware(orderModel), clearCart, execute);
 
 /**
  * @swagger
