@@ -11,5 +11,5 @@ export const globalLimiter = rateLimit({
 export const loginLimiter = rateLimit({
   windowMs: 3 * 60 * 1000,
   max: 5, 
-  message: `Too many attempts, please try again after an hour`,
+  message: `Too many attempts, please try again after an 3 minutes`,
 });
