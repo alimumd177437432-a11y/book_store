@@ -1,9 +1,10 @@
 import Joi from "joi";
 
+const objectIdRule = Joi.string().pattern(/^[a-fA-F0-9]{24}$/);
+
 // ===== Add Review =====
-// rating: رقم من 1 إلى 5
-// review: اختياري — نص
-// bookId: MongoDB ObjectId — required
+// userId بييجي من req.user.id في الـ controller مباشرة — مش من req.body
+// المستخدم بيبعت: rating (required) + bookId (required) + review (optional)
 export const addReviewSchema = Joi.object({
   rating: Joi.number().integer().min(1).max(5).required().messages({
     "number.base": "Rating must be a number",
@@ -18,17 +19,14 @@ export const addReviewSchema = Joi.object({
     "string.max": "Review must be at most 1000 characters",
   }),
 
-  bookId: Joi.string()
-    .pattern(/^[a-fA-F0-9]{24}$/)
-    .required()
-    .messages({
-      "string.pattern.base": "bookId must be a valid MongoDB ObjectId",
-      "any.required": "bookId is required",
-    }),
-});
+  bookId: objectIdRule.required().messages({
+    "string.pattern.base": "bookId must be a valid MongoDB ObjectId",
+    "any.required": "bookId is required",
+  }),
+}).options({ allowUnknown: false });
 
 // ===== Update Review =====
-// كل الحقول اختيارية — بس لازم يبعت واحد على الأقل
+
 export const updateReviewSchema = Joi.object({
   rating: Joi.number().integer().min(1).max(5).messages({
     "number.base": "Rating must be a number",
@@ -43,6 +41,7 @@ export const updateReviewSchema = Joi.object({
   }),
 })
   .min(1)
+  .options({ allowUnknown: false })
   .messages({
     "object.min": "Please provide at least one field to update",
   });

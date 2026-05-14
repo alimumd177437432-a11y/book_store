@@ -1,10 +1,6 @@
 import Joi from "joi";
 
 // ===== Signup =====
-// name: حروف فقط (عربي أو إنجليزي أو مسافة) — 2 إلى 50 حرف
-// email: صيغة إيميل صحيحة
-// password: 8 أحرف على الأقل، حرف كبير واحد، رقم واحد على الأقل
-// phone: أرقام وعلامة + فقط، 7 إلى 15 رقم
 export const signupSchema = Joi.object({
   name: Joi.string()
     .pattern(/^[\u0600-\u06FFa-zA-Z\s]+$/)
@@ -29,8 +25,7 @@ export const signupSchema = Joi.object({
     .required()
     .messages({
       "string.min": "Password must be at least 8 characters",
-      "string.pattern.base":
-        "Password must contain at least one uppercase letter and one number",
+      "string.pattern.base": "Password must contain at least one uppercase letter and one number",
       "any.required": "Password is required",
     }),
 
@@ -38,8 +33,7 @@ export const signupSchema = Joi.object({
     .pattern(/^\+?[0-9]{7,15}$/)
     .required()
     .messages({
-      "string.pattern.base":
-        "Phone number must be between 7 and 15 digits and may start with +",
+      "string.pattern.base": "Phone number must be between 7 and 15 digits and may start with +",
       "any.required": "Phone is required",
     }),
 });
@@ -57,7 +51,8 @@ export const loginSchema = Joi.object({
 });
 
 // ===== Update Account =====
-
+// address أصبح object فيه country و city بناءً على الـ model الجديد
+// كل الحقول اختيارية — بس لازم يبعت واحد على الأقل
 export const updateAccountSchema = Joi.object({
   name: Joi.string()
     .pattern(/^[\u0600-\u06FFa-zA-Z\s]+$/)
@@ -76,12 +71,21 @@ export const updateAccountSchema = Joi.object({
   phone: Joi.string()
     .pattern(/^\+?[0-9]{7,15}$/)
     .messages({
-      "string.pattern.base":
-        "Phone number must be between 7 and 15 digits and may start with +",
+      "string.pattern.base": "Phone number must be between 7 and 15 digits and may start with +",
     }),
 
-  address: Joi.string().max(200).messages({
-    "string.max": "Address must be at most 200 characters",
+  // address object كما هو في الـ model — { country, city }
+  address: Joi.object({
+    country: Joi.string().min(2).max(100).messages({
+      "string.min": "Country must be at least 2 characters",
+      "string.max": "Country must be at most 100 characters",
+    }),
+    city: Joi.string().min(2).max(100).messages({
+      "string.min": "City must be at least 2 characters",
+      "string.max": "City must be at most 100 characters",
+    }),
+  }).messages({
+    "object.base": "Address must be an object with country and city",
   }),
 })
   .min(1)
@@ -97,8 +101,7 @@ export const updatePasswordSchema = Joi.object({
     .required()
     .messages({
       "string.min": "Password must be at least 8 characters",
-      "string.pattern.base":
-        "Password must contain at least one uppercase letter and one number",
+      "string.pattern.base": "Password must contain at least one uppercase letter and one number",
       "any.required": "Password is required",
     }),
 });
@@ -125,8 +128,7 @@ export const newPasswordSchema = Joi.object({
     .required()
     .messages({
       "string.min": "Password must be at least 8 characters",
-      "string.pattern.base":
-        "Password must contain at least one uppercase letter and one number",
+      "string.pattern.base": "Password must contain at least one uppercase letter and one number",
       "any.required": "Password is required",
     }),
 });

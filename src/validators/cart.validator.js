@@ -1,13 +1,11 @@
 import Joi from "joi";
 
-// تعريف قاعدة الـ ObjectId عشان نكررها بسهولة
 const objectIdRule = Joi.string().pattern(/^[a-fA-F0-9]{24}$/);
 
-// ===== Add to Cart (إضافة للسلة) =====
+// ===== Add to Cart =====
+// userId بيتضاف تلقائياً من passUserIdMiddelware على req.body قبل الـ validate
+// لذلك لازم نسمح فيه — لكن المستخدم ما يقدر يبعته بنفسه لأنه بييجي من التوكن
 export const addToCartSchema = Joi.object({
-  // مسموح يوصل من التوكن وما رح يعطي Error 400 هالحين
-  userId: objectIdRule, 
-
   bookId: objectIdRule.required().messages({
     "string.pattern.base": "bookId must be a valid MongoDB ObjectId",
     "any.required": "bookId is required",
@@ -19,24 +17,20 @@ export const addToCartSchema = Joi.object({
     "number.min": "Count must be at least 1",
     "any.required": "Count is required",
   }),
+
+  // بيتضاف من passUserIdMiddelware — نسمح فيه لكن ما بنطلبه من المستخدم
+  userId: objectIdRule.messages({
+    "string.pattern.base": "userId must be a valid MongoDB ObjectId",
+  }),
 });
 
-// ===== Update Cart Item (تعديل الكمية فقط) =====
+// ===== Update Cart Item =====
+// الـ update بيشتغل على count فقط — userId مش موجود في req.body هون
 export const updateCartSchema = Joi.object({
-  // مسموح يوصل من التوكن
-  userId: objectIdRule,
-
   count: Joi.number().integer().min(1).required().messages({
     "number.base": "Count must be a number",
     "number.integer": "Count must be a whole number",
     "number.min": "Count must be at least 1",
     "any.required": "Count is required",
-  }),
-});
-
-// ===== Cart Params (لفحص الـ ID في الرابط لو لزم الأمر) =====
-export const cartParamsSchema = Joi.object({
-  id: objectIdRule.required().messages({
-    "string.pattern.base": "Invalid Cart ID format",
   }),
 });

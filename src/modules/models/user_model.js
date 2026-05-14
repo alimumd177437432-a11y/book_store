@@ -29,16 +29,14 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    // address: {
-    //   country: {
-    //     type: String,
-    //     required: true,
-    //   },
-    //   city: {
-    //     type: String,
-    //     required: true,
-    //   },
-    // },
+    address: {
+      country: {
+        type: String,
+      },
+      city: {
+        type: String,
+      },
+    },
   },
   {
     timestamps: true,

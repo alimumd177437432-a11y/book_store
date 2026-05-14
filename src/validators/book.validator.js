@@ -1,8 +1,7 @@
 import Joi from "joi";
 
 // ===== Add Book =====
-// title, description, type, price — كلها required
-// الصور بتيجي عبر multer (req.files) مش req.body — ما بنـvalidate فيها هون
+
 export const addBookSchema = Joi.object({
   title: Joi.string().min(2).max(200).required().messages({
     "string.min": "Title must be at least 2 characters",
@@ -26,10 +25,17 @@ export const addBookSchema = Joi.object({
     "number.positive": "Price must be a positive number",
     "any.required": "Price is required",
   }),
-});
+
+  minPrivImage: Joi.string().uri().required().messages({
+    "string.uri": "Cover image must be a valid URL",
+    "any.required": "Cover image is required",
+  }),
+
+  // optional لأنه بيتضاف بس لو في title — من convertTitleToSlug
+  slug: Joi.string().optional(),
+}).options({ allowUnknown: false });
 
 // ===== Update Book =====
-// كل الحقول اختيارية — بس لازم يبعت واحد على الأقل
 export const updateBookSchema = Joi.object({
   title: Joi.string().min(2).max(200).messages({
     "string.min": "Title must be at least 2 characters",
@@ -49,8 +55,7 @@ export const updateBookSchema = Joi.object({
     "number.base": "Price must be a number",
     "number.positive": "Price must be a positive number",
   }),
-})
-  .min(1)
-  .messages({
-    "object.min": "Please provide at least one field to update",
-  });
+
+  slug: Joi.string().optional(),
+  minPrivImage: Joi.string().uri().optional(),
+}).options({ allowUnknown: false });

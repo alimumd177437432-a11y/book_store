@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { authentication } from "../../middelwares/auth_middelware.js";
 import { addToWishlist, getMyWishlist, removeFromWishlist } from "../controler/wishlist_controler.js";
-// import { validate } from "../../validators/validate.js";
-// import { addToWishlistSchema } from "../../validators/wishlist.validator.js";
+import { validate } from "../../validators/validate.js";
+import { addToWishlistSchema } from "../../validators/wishlist.validator.js";
 
 const wishlistRouter = Router();
 
@@ -80,7 +80,7 @@ const wishlistRouter = Router();
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-wishlistRouter.post("/", authentication,  addToWishlist);
+wishlistRouter.post("/", authentication, validate(addToWishlistSchema), addToWishlist);
 
 /**
  * @swagger
