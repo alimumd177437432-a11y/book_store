@@ -20,7 +20,10 @@ import { globalLimiter } from "./src/middelwares/rateLimiter.js";
 dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
 const app = express();
+
+app.set('trust proxy', 1);
 
 app.use(helmet());
 
@@ -31,7 +34,6 @@ if (process.env.NODE_ENV === "development") {
 app.post("/webhook", express.raw({ type: "application/json" }), stripeWebhook);
 
 app.use(express.json({ limit: "20kb" }));
-
 app.use("/api", globalLimiter);
 
 app.use((req, res, next) => {
