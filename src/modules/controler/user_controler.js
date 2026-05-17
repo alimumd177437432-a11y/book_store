@@ -101,11 +101,13 @@ export const login = ErrorHandler(async (req, res, next) => {
     process.env.SECRET_KEY,
     { expiresIn: "1h" },
   );
+  const userResponse = user.toObject();
+  delete userResponse.password;
 
   res.status(200).json({
     message: "Login successful",
     token: token,
-    data : user
+    data : userResponse
   });
 });
 
