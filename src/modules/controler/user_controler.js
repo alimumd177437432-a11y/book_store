@@ -22,11 +22,13 @@ export const signup = ErrorHandler(async (req, res) => {
 
   if (!create) throw new SendError(400, "bad Request");
   sendEmail(req.body.email);
+  const userResponse = create.toObject();
+  delete userResponse.password;
 
   res.status(201).json({
     status: "success",
     message: "Created successfully , verify your email now",
-    data: create,
+    data: userResponse,
   });
 });
 
@@ -109,10 +111,14 @@ export const login = ErrorHandler(async (req, res, next) => {
   user.refreshToken = refreshToken;
   await user.save();
 
+  const userResponse = user.toObject();
+  delete userResponse.password;
+
   res.status(200).json({
     message: "Login successful",
     token,
     refreshToken,
+    data : userResponse
   });
 });
 
@@ -161,7 +167,9 @@ export const verifyEmial = ErrorHandler(async (req, res) => {
   if (!findUser) throw new SendError(400, "user not found");
   findUser.verifed = true;
   await findUser.save();
-  res.status(200).json({ message: "verfied successfuly", data: findUser });
+  const userResponse = findUser.toObject();
+  delete userResponse.password;
+  res.status(200).json({ message: "verfied successfuly", data: userResponse });
 });
 
 //reset password
