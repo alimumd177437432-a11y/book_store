@@ -99,7 +99,7 @@ export const login = ErrorHandler(async (req, res, next) => {
       verifed: user.verifed,
     },
     process.env.SECRET_KEY,
-    { expiresIn: "1m" },
+    { expiresIn: "1h" },
   );
   const userResponse = user.toObject();
   delete userResponse.password;
