@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { execute } from "../../middelwares/execute_middelware.js";
-import { addForResetPassword, getMyAcountData, login, newpassword, signup, updateAcount, updatePassword, verifyEmial } from "../controler/user_controler.js";
+import { addForResetPassword, getMyAcountData, login, newpassword, signup, updateAcount, updatePassword, verifyEmial, refreshAccessToken } from "../controler/user_controler.js";
 import { deleteMiddelware, getMiddelware, putMiddelware } from "../../middelwares/query_middelwares.js";
 import { userModel } from "../models/user_model.js";
 import { filterMiddleware } from "../../middelwares/featuears_middelware.js";
@@ -162,6 +162,9 @@ userRouter.post("/signup", loginLimiter, validate(signupSchema), signup);
  *               $ref: '#/components/schemas/ErrorResponse'
  */
 userRouter.post("/login" , loginLimiter, validate(loginSchema), login);
+
+// تجديد الـ access token باستخدام الـ refresh token
+userRouter.post("/refresh-token", refreshAccessToken);
 
 /**
  * @swagger

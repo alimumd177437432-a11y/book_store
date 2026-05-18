@@ -90,7 +90,52 @@ export const login = ErrorHandler(async (req, res, next) => {
     return next(new SendError(401, "Invalid email or password"));
   }
 
-  const token = jwt.sign(
+  const payload = {
+    id: user._id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    verifed: user.verifed,
+  };
+
+  const token = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: "1d" });
+
+  const refreshToken = jwt.sign(
+    { id: user._id },
+    process.env.SECRET_KEY,
+    { expiresIn: "30d" }
+  );
+
+  user.refreshToken = refreshToken;
+  await user.save();
+
+  res.status(200).json({
+    message: "Login successful",
+    token,
+    refreshToken,
+  });
+});
+
+// ── Refresh Token Endpoint ──────────────────────────────
+
+export const refreshAccessToken = ErrorHandler(async (req, res, next) => {
+  const { refreshToken } = req.body;
+
+  if (!refreshToken) return next(new SendError(401, "Refresh token is required"));
+
+  let decoded;
+  try {
+    decoded = jwt.verify(refreshToken, process.env.SECRET_KEY);
+  } catch {
+    return next(new SendError(401, "Invalid or expired refresh token"));
+  }
+
+  const user = await userModel.findById(decoded.id);
+  if (!user || user.refreshToken !== refreshToken) {
+    return next(new SendError(401, "Refresh token is not valid"));
+  }
+
+  const newToken = jwt.sign(
     {
       id: user._id,
       name: user.name,
@@ -99,15 +144,12 @@ export const login = ErrorHandler(async (req, res, next) => {
       verifed: user.verifed,
     },
     process.env.SECRET_KEY,
-    { expiresIn: "1h" },
+    { expiresIn: "1d" }
   );
-  const userResponse = user.toObject();
-  delete userResponse.password;
 
   res.status(200).json({
-    message: "Login successful",
-    token: token,
-    data : userResponse
+    message: "Token refreshed successfully",
+    token: newToken,
   });
 });
 

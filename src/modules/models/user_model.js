@@ -8,10 +8,10 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
     role: {
-    type: String,
-    enum: ["user", "admin"], 
-    default: "user"
-  },
+      type: String,
+      enum: ["user", "admin"],
+      default: "user"
+    },
     email: {
       type: String,
       required: true,
@@ -30,12 +30,12 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
     address: {
-      country: {
-        type: String,
-      },
-      city: {
-        type: String,
-      },
+      country: { type: String },
+      city:    { type: String },
+    },
+    refreshToken: {
+      type: String,
+      default: null,
     },
   },
   {
